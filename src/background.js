@@ -96,8 +96,10 @@ function evolveSmoke() {
   }
 }
 
-function addDungeonClouds() {
-  document.body.style.backgroundColor = '#aa0000';
+function addDungeonClouds(skipBG) {
+  if (!skipBG) {
+    document.body.style.backgroundColor = '#aa0000';
+  }
   smokeParticles.forEach(particle => {
     scene.remove(particle);
   });
@@ -106,8 +108,10 @@ function addDungeonClouds() {
   });
 }
 
-function addVillageClouds() {
-  document.body.style.backgroundColor = '#87CEEB';
+function addVillageClouds(skipBG) {
+  if (!skipBG) {
+    document.body.style.backgroundColor = '#87CEEB';
+  }
   smokeParticles2.forEach(particle => {
     scene.remove(particle);
   });
@@ -124,10 +128,10 @@ window.addEventListener("resize", (event) => {
   // console.log('done initting', gameLoc);
   if (gameLoc === 'village') {
     // console.log('village', smokeParticles.length);
-    addVillageClouds();
+    addVillageClouds(true);
   } else if (gameLoc === 'dungeon') {
     // console.log('dungeon', smokeParticles2.length);
-    addDungeonClouds();
+    addDungeonClouds(true);
   }
 });
 
@@ -135,15 +139,15 @@ window.addEventListener("resize", (event) => {
 init();
 animate();
 
-export function toggleLoc(loc) {
+export function toggleLoc(loc, skipBG = false) {
   gameLoc = loc;
   init();
   // console.log('done initting', gameLoc);
   if (gameLoc === 'village') {
     // console.log('village', smokeParticles.length);
-    addVillageClouds();
+    addVillageClouds(skipBG);
   } else if (gameLoc === 'dungeon') {
     // console.log('dungeon', smokeParticles2.length);
-    addDungeonClouds();
+    addDungeonClouds(skipBG);
   }
 }

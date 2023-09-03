@@ -13,15 +13,15 @@ const nosleep = new NoSleep();
 function roll() {
   return sample(d6);
 }
+toggleLoc('dungeon', true);
 
 function App() {
   const [loc, setLoc] = useState(null);
   const [turn, setTurn] = useState(0);
   const [removedCard, setRemovedCard] = useState(null);
   const { width, height } = useResize();
-  const [cards, setCards] = useState([]);
   const [rollResultTxt, setRollResultTxt] = useState('');
-  console.log('width', width, 'height', height, cards);
+  console.log('width', width, 'height', height);
   const fontSize = Math.round(height / 15);
   const padding = Math.round(height / 50);
   let landscape = false;
@@ -135,51 +135,28 @@ function App() {
     let locChanged = false;
     console.log('rolls', r1, r2, r3);
     if (r1 > 3) {
-      setCards([1,2,3,4,5,6]);
       locChanged = (loc === null) || (loc === 'village');
       setLoc('dungeon');
       toggleLoc('dungeon');
-      if (r2 < 4) {
-        if (locChanged) {
-          if (r3 < 4) {
-            setRemovedCard(1);
-          } else if (r3 === 4 || r3 === 5) {
-            setRemovedCard(3);
-          } else {
-            setRemovedCard(5);
-          }
-        } else { // more likely to delve deeper
-          if (r3 < 3) {
-            setRemovedCard(1);
-          } else if (r3 === 3 || r3 === 4) {
-            setRemovedCard(3);
-          } else {
-            setRemovedCard(5);
-          }
+      const left = (r2 < 4); // left side of dungeon
+      if (locChanged) {
+        if (r3 < 4) {
+          setRemovedCard(left ? 1 : 2);
+        } else if (r3 === 4 || r3 === 5) {
+          setRemovedCard(left ? 3 : 4);
+        } else {
+          setRemovedCard(left ? 5 : 6);
         }
-      } else {
-        if (locChanged) {
-          if (r3 < 4) {
-            setRemovedCard(2);
-          } else if (r3 === 4 || r3 === 5) {
-            setRemovedCard(4);
-          } else {
-            setRemovedCard(6);
-          }
-        } else { // more likely to delve deeper
-          if (r3 < 3) {
-            setRemovedCard(2);
-          } else if (r3 === 3 || r3 === 4) {
-            setRemovedCard(4);
-          } else {
-            setRemovedCard(6);
-          }
-
+      } else { // more likely to delve deeper if stayed in dungeon
+        if (r3 < 3) {
+          setRemovedCard(left ? 1 : 2);
+        } else if (r3 === 3 || r3 === 4) {
+          setRemovedCard(left ? 3 : 4);
+        } else {
+          setRemovedCard(left ? 5 : 6);
         }
-        
       }
     } else {
-      setCards([1,2,3,4,5,6,7,8,9,10,11,12]);
       locChanged = (loc === null) || (loc ===  'dungeon');
       setLoc('village');
       toggleLoc('village');
