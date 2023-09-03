@@ -18,13 +18,18 @@ let fs = false;
 document.addEventListener("dblclick", (e) => {
   e.stopPropagation();
   e.preventDefault();
-  if (fs) {
-    document.exitFullscreen();
-    fs = false;
-  } else {
-    document.documentElement.requestFullscreen();
-    fs = true;
+  try {
+    if (fs) {
+      fs = false;
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+      fs = true;
+    }
+  } catch (error) {
+    console.log('error', error);
   }
+  
 });
 
 function App() {
