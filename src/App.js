@@ -17,6 +17,7 @@ toggleLoc('dungeon', true);
 
 function App() {
   const [loc, setLoc] = useState(null);
+  const [fs, setFs] = useState(false);
   const [turn, setTurn] = useState(0);
   const [removedCard, setRemovedCard] = useState(null);
   const { width, height } = useResize();
@@ -205,6 +206,20 @@ function App() {
       style={{
         width: `${wBoard}px`,
         height: `${hBoard}px`,
+      }}
+      onClick={(e) => {
+        if (e.detail === 2) {
+          console.log('double click');
+          if (fs) {
+            document.exitFullscreen();
+            setFs(false);
+          } else {
+            document.documentElement.requestFullscreen();
+            setFs(true);
+          }
+          e.stopPropagation();
+          e.preventDefault();
+        }
       }}
     >
       {turn ? (
